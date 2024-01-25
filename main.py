@@ -46,12 +46,14 @@ with tab1:
     st.write('  \n')
     st.write('  \n') 
 
+    user_api_key = st.secrets.OpenAIAPI.openai_api_key
+
     user_api_key = st.sidebar.text_input(
     label="Your OpenAI API key",
     placeholder="あなたのOpenAI API keyをここにペーストして下さい。",
     type="password")
     openai.api_key = user_api_key
-    os.environ['SERPAPI_API_KEY'] = "74fea45ccb646481e0c9ac1fd733fdce926cdb7694eb61e6e900adbec7cf08b1"
+    os.environ['SERPAPI_API_KEY'] = st.secrets.SerpAPI.serpapi_key
 
     llm = OpenAI(openai_api_key=user_api_key)
     tools = load_tools(["serpapi"],llm=llm)
