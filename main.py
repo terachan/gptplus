@@ -47,24 +47,25 @@ with tab1:
     st.write('  \n') 
 
     user_api_key = st.secrets.OpenAIAPI.openai_api_key
+    os.environ['SERPAPI_API_KEY'] = st.secrets.SerpAPI.serpapi_key
 
     user_api_key = st.sidebar.text_input(
     label="Your OpenAI API key",
     placeholder="あなたのOpenAI API keyをここにペーストして下さい。",
     type="password")
-    openai.api_key = user_api_key
-    os.environ['SERPAPI_API_KEY'] = st.secrets.SerpAPI.serpapi_key
-
-    llm = OpenAI(openai_api_key=user_api_key)
-    tools = load_tools(["serpapi"],llm=llm)
-    agent = initialize_agent(tools,llm,agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=False)
 
     ques = st.text_input(
     label="ご質問は何でしょうか？",
     placeholder="ここに入力して下さい",
     type="default")
 
-    st.write(agent.run(ques))
+    if user_api_key:
+        openai.api_key = user_api_key
+        llm = OpenAI(openai_api_key=user_api_key)
+        tools = load_tools(["serpapi"],llm=llm)
+        agent = initialize_agent(tools,llm,agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=False)
+        st.write(agent.run(ques))
+    
 
     st.sidebar.write('改善点やご要望等のフィードバックを頂けますと大変励みになります。ご連絡/お問合せは以下メールまでお願い致します。')
     st.sidebar.write('<a href="mailto:tadahisa.terao777@gmail.com">tadahisa.terao777@gmail.com</a>', unsafe_allow_html=True)
