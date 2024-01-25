@@ -53,7 +53,7 @@ with tab1:
     openai.api_key = user_api_key
     os.environ['SERPAPI_API_KEY'] = "74fea45ccb646481e0c9ac1fd733fdce926cdb7694eb61e6e900adbec7cf08b1"
 
-    llm = OpenAI(temperature=0.1)
+    llm = OpenAI(openai_api_key=user_api_key)
     tools = load_tools(["serpapi"],llm=llm)
     agent = initialize_agent(tools,llm,agent=AgentType.ZERO_SHOT_REACT_DESCRIPTION, verbose=False)
 
